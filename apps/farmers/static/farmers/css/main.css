@@ -1,0 +1,16 @@
+.infowindow {
+    border: solid black 2px;
+    text-align: left;
+}
+
+.infowindow p {
+    border: solid black;
+    margin-bottom: 0;
+}
+
+.loading {
+    opacity: .7;
+    background: gray !important;
+    background-color: gray !important;
+    background-image: url(hourglass.jpg);
+}

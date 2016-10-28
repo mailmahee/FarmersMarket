@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Welcome Page</title>
+         {% load staticfiles %}
+         {% include '../login_reg_app/logoutindex.html' %}
+         <script src = "{% static 'farmers/js/farket.js' %}"></script>
+         <link rel="stylesheet" href="{% static 'farmers/css/main.css' %}">
+         {% include '../login_reg_app/header.html' %}
+         <!-- Javascript -->
+         <script type="text/javascript">
+             $(document).ready(function() {
+                 $("#zipbutton").click(function() {
+                     var zip = $("input[name='zip']").val();
+                     findMarkets(zip);
+                 })
+                 $("#zipform").submit(function(event) {
+                     event.preventDefault();
+                     enterZip();
+                 })
+                 $("#location").click(function() {
+                     $("#map").addClass("loading");
+                     getLocation();
+                     window.setTimeout(findMarkets, 5000);
+                    //  findMarkets(currentZip);
+                    //  geocodeLatLong(geocoder, map);
+                 })
+                 $("#reminder").click(function() {
+                   if (!$('#date_plan').val())
+                   {
+                     alert("Please Enter a valid date");
+                   }else{
+                    alert("We will send you a reminder to Email/Mobile number with all the information regarding specials:"+$('#date_plan').val());
+                   }
+                 })
+
+                 $("#taxi").click(function () {
+                  alert("We will give you directions based on the mode of travel of your choice:"+ $('#travelType').val());
+                  $("#directions").slideDown("slow",function(){
+                    $('html, body').animate({ scrollTop: $("#directions").offset().top }, 1000); })
+                 })
+
+             })
+         </script>
+         <div id="dialog"></div>
+         <style>
+            body{
+                background-image: url({% static "farmers/img/fancy.jpg" %});
+                background-size:contain;
+                background-repeat: repeat;
+            }
+         </style>
+    </head>
+    <body>
+        <script>
+        $(window).scroll(function() {
+        $('#animatedElement').each(function(){
+        var imagePos = $(this).offset().top;
+
+        var topOfWindow = $(window).scrollTop();
+        if (imagePos < topOfWindow+400) {
+        $(this).addClass("slideUp");
+        }
+        });
+        });
+        </script>
+
+        <div class="container" style="background: rgba(46, 51, 56, 0.5);">
+
+        <div class="well" style="color:#fff;background: rgba(46, 51, 56, 0.5);font-family: Papyrus, fantasy;letter-spacing: 2px;padding-bottom:2cm;">
+          <center>
+            <h1 id="welcome">Welcome to The Fresh Farm Markets!</h1>
+          </center>
+          <div style="margin-top:30px;letter-spacing: 3px;">
+            <h4 style="line-height: 300%;">
+              As a Farmer's Market Enthusiast ourselves, We understand our community of food lovers who would like to keep themselves upto date with various events, recepies, Offers available in local markets. The idea of eating locally grown food - is healthy for the mind body and soul. Also it is a good way to get out in the sun and enjoy some fresh air $ in turn support the local community.
+            </h4>
+            <u><h4 style="line-height: 300%;">Here are a list of services that we offer to our community.</h4></u>
+            <ul>
+              <li style="line-height:250%">
+                 <h4 >As a Farmers Market Enthusiast ourselves, we would be give you a list of Specials that are available and various seasonal recepies.</h4>
+              </li><br />
+              <li style="line-height:250%">
+                <h4>Track various farmers Market event's across the US and provide a portal to browse and get directions.</h4>
+              </li><br />
+              <li style="line-height:250%">
+                <h4>Provide a portal for various enthusiasts to share feedback, reviews and friendly-tips.</h4>
+              </li>
+            </ul>
+
+          </div>
+          <div id="myCarousel" class="carousel slide" data-ride="carousel" style="background: rgba(46, 51, 56, 0.2);">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+              <li data-target="#myCarousel" data-slide-to="3"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox"style="width: auto; height: 500px; max-height: 500px;">
+
+              <div class="item active">
+                <img src="../static/farmers/img/fall.jpg"  alt="Flower">
+              </div>
+
+              <div class="item">
+                <img src="../static/farmers/img/halloween.jpg" alt="Chania">
+              </div>
+
+              <div class="item ">
+                <img src="../static/farmers/img/tuscan.jpg" alt="Chania">
+              </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+          <div style="margin-top:60px;">
+              <div class="col-xs-10 col-xs-offset-2" style="margin-top:20px;margin-bottom:30px;padding-left:30px;">
+                  <div class="col-xs-2">
+                    <input id = "location" class='btn btn-success' type="submit" name="location" value="Use Current Location" role='button'/>
+                  </div>
+                  <div class="col-xs-2" style="margin-left:60px;text-align:center;">
+                    <label style="color:#fff;font-size:200%;"> OR </label>
+                  </div>
+                  <form id = "zipform" class="" method="post">
+                      {% csrf_token %}
+                  <div class="col-xs-6">
+                    <label for="zipcode" style="color:#fff;margin-right:10px;font-size:120%;">Zip Code:</label>
+                    <input id = "zipcode" style="color:black;"type="text" name="zip" value="">
+                    <input id = "zipbutton" class='btn btn-success' type="submit" value="Submit" role='button'/>
+                  </div>
+                </form>
+              </div>
+
+
+        </div>
+
+        <div id="holder">
+            <!-- <div class="overlay standard hidden">&nbsp</div> -->
+            <div id="map" style="width:100%;height:500px;background: rgba(46, 51, 56, 0.2);color:black;" >
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoKsC7dmG1HXoMYmCH7qyjRMdE1PT1rPc&callback=myMap"></script>
+            </div>
+
+            <div style="margin-top:20px;margin-bottom:20px;">
+
+              <div class="col-xs-5 col-xs-offset-1">
+                  <label style="color:#fff; margin-right:20px;">PLANNED DATE :</label>
+                  <input id="date_plan" style="color:black;" type="date" name="visit_date" />
+                  <i id="reminder" class="btn-md fa fa-mobile fa-3x floating" style="margin-left:20px;"></i>
+              </div>
+
+              <div class="col-xs-5" >
+                  <label style="color:#fff; margin-right:10px;margin-top:20px;margin-bottom:20px;">MODE OF TRAVEL : </label>
+                  <select id="travelType" style="color:black;">
+                      <option value="WALKING">Walking</option>
+                      <option value="BICYCLING">Bicycling</option>
+                      <option value="DRIVING">Driving</option>
+                      <option value="TRANSIT">Transit</option>
+                  </select>
+                  <i id="taxi" class="btn-md fa fa-taxi fa-2x floating" style="color:#fff;margin-left:20px;"></i>
+              </div>
+
+              </div >
+              <div id="directions" style="width:100%;height:450px;margin-bottom:30px;display:none;border:solid grey;" >
+              </div>
+
+            </div>
+        </div>
+      </div>
+      <script>
+      $('#animatedElement').click(function() {
+        $(this).addClass("slideUp");
+      });
+      </script>
+    </body>
+    <footer class="img-responsive">
+        <div class="container footer col-xs-12 col-xs-offset-1 expandOpen"style="padding:20px;">
+          <center>
+            <span style="margin:20px;"><a href="https://www.yelp.com/search?find_desc=Farmers+Market&find_loc=San+Jose%2C+CA&ns=1"><i id="yelp" class="fa fa-yelp fa-4x bounce"></i></a></span>
+            <span style="margin:20px;"><a href="https://www.facebook.com/TheFreshFarmMarkets/" class="fa" title="Facebook"><i id="facebook" class="fa fa-facebook fa-4x bounce"></i></a></span>
+            <span style="margin:20px;"><a href="https://twitter.com/The_Fresh_Farm/"><i id="twitter" class="fa fa-twitter fa-4x bounce"></i></i></a></span>
+            <span style="margin:20px;"><a href="https://www.instagram.com/the.fresh.farm.markets/"><i id="instagram" class="fa fa-instagram fa-4x bounce"></i></i></a></span>
+          </center>
+        </div>
+    </footer>
+</html>
