@@ -34,13 +34,11 @@
                     alert("We will send you a reminder to Email/Mobile number with all the information regarding specials:"+$('#date_plan').val());
                    }
                  })
-
                  $("#taxi").click(function () {
                   alert("We will give you directions based on the mode of travel of your choice:"+ $('#travelType').val());
                   $("#directions").slideDown("slow",function(){
                     $('html, body').animate({ scrollTop: $("#directions").offset().top }, 1000); })
                  })
-
              })
          </script>
          <div id="dialog"></div>
@@ -57,7 +55,6 @@
         $(window).scroll(function() {
         $('#animatedElement').each(function(){
         var imagePos = $(this).offset().top;
-
         var topOfWindow = $(window).scrollTop();
         if (imagePos < topOfWindow+400) {
         $(this).addClass("slideUp");
